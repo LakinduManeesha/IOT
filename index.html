@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gas Sensor Dashboard</title>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial; text-align: center; padding-top: 50px; }
+    h1 { font-size: 30px; }
+    #value { font-size: 50px; color: red; }
+  </style>
+</head>
+<body>
+  <h1>Real-Time Gas Sensor Value</h1>
+  <div id="value">Loading...</div>
+
+  <script>
+    const url = "https://api.thingspeak.com/channels/YOUR_CHANNEL_ID/fields/1/last.json?api_key=YOUR_READ_API_KEY";
+
+    function fetchGasValue() {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const val = data.field1;
+          document.getElementById("value").textContent = val;
+        })
+        .catch(err => {
+          document.getElementById("value").textContent = "Error loading data";
+          console.error(err);
+        });
+    }
+
+    setInterval(fetchGasValue, 3000);
+  </script>
+</body>
+</html>
